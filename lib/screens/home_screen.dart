@@ -1,14 +1,58 @@
+import 'dart:convert';
 import 'dart:js';
 
 import 'package:ejemplo_3/screens/product_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/product_card.dart';
 
 class HomeScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
+  List catList = ['All', "Best Selling", "Jackets", "Shirt", "Pants", "bags"];
 
+  List imgList = ["vestido", "VestidoV", "BlusaR", "BlusaA"];
+
+  /// Método para cargar un nuevo producto
+  void loadNewProduct(BuildContext context) async {
+    final String response =
+        await rootBundle.loadString('new_product.json');
+    final data = json.decode(response);
+    if (data is List) {
+      final Map<String, dynamic> newProduct = data.first;
+      showProductDialog(context, newProduct['name']);
+    }
+  }
+
+// Método para generar una ventana emergente con el nuevo producto
+  void showProductDialog(BuildContext context, String productName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nuevo Producto Añadido'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Producto: $productName'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //Metodo para la busqueda
   void handleSearch(BuildContext context, String query) {
     // Buscar en imgList para una coincidencia
     String? foundProduct = imgList.firstWhere(
@@ -30,10 +74,6 @@ class HomeScreen extends StatelessWidget {
       ));
     }
   }
-
-  List catList = ['All', "Best Selling", "Jackets", "Shirt", "Pants", "bags"];
-
-  List imgList = ["vestido", "VestidoV", "BlusaR", "BlusaA"];
 
   @override
   Widget build(BuildContext context) {
@@ -167,17 +207,17 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {},
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.cart_fill), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+              icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFFD7254),
-        child: Icon(Icons.camera),
-        onPressed: () {},
+        child: Icon(Icons.add_circle_sharp),
+        onPressed: () => loadNewProduct(context), // Pasa el contexto aquí
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
