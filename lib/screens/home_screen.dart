@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:js';
 import 'package:ejemplo_3/screens/cart_screen.dart';
+import 'package:ejemplo_3/screens/product_screen.dart';
 import 'package:ejemplo_3/screens/profile_screen.dart';
 import 'package:ejemplo_3/screens/wishlist_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,8 +19,7 @@ class HomeScreen extends StatelessWidget {
 
   /// Método para cargar un nuevo producto
   void loadNewProduct(BuildContext context) async {
-    final String response =
-        await rootBundle.loadString('new_product.json');
+    final String response = await rootBundle.loadString('new_product.json');
     final data = json.decode(response);
     if (data is List) {
       final Map<String, dynamic> newProduct = data.first;
@@ -213,23 +213,28 @@ class HomeScreen extends StatelessWidget {
               break;
             case 1:
               // Navegar a la página del carrito
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartScreen()));
               break;
             case 2:
               // Navegar a la lista de deseos
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishlistScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => WishlistScreen()));
               break;
             case 3:
               // Navegar a la página de perfil de usuario
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfileScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => UserProfileScreen()));
               break;
           }
         },
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Wishlist'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
         ],
       ),
@@ -238,7 +243,8 @@ class HomeScreen extends StatelessWidget {
         child: Icon(Icons.add_circle_sharp),
         onPressed: () => loadNewProduct(context), // Pasa el contexto aquí
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
