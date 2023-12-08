@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:js';
-
-import 'package:ejemplo_3/screens/product_screen.dart';
+import 'package:ejemplo_3/screens/cart_screen.dart';
+import 'package:ejemplo_3/screens/profile_screen.dart';
+import 'package:ejemplo_3/screens/wishlist_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/product_card.dart';
-import 'cart_screen.dart';
-import 'wishlist_screen.dart';
+import 'product_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-// Método para generar una ventana emergente con el nuevo producto
+  // Método para generar una ventana emergente con el nuevo producto
   void showProductDialog(BuildContext context, String productName) {
     showDialog(
       context: context,
@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //Metodo para la busqueda
+  // Metodo para la busqueda
   void handleSearch(BuildContext context, String query) {
     // Buscar en imgList para una coincidencia
     String? foundProduct = imgList.firstWhere(
@@ -207,29 +207,28 @@ class HomeScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         onTap: (index) {
-                switch (index) {
-                    case 0:
-                        // Aquí, 'Home' es el ítem actual, por lo que no es necesario hacer nada
-                        break;
-                    case 1:
-                        // Navegar a la página del carrito
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen()));
-                        break;
-                    case 2:
-                        // Navegar a la lista de deseos
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishlistScreen()));
-                        break;
-                    case 3:
-                        // Navegar a la página de perfil de usuario
-                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-                        break;
-                }
-            },
+          switch (index) {
+            case 0:
+              // 'Home' es el ítem actual, por lo que no es necesario hacer nada
+              break;
+            case 1:
+              // Navegar a la página del carrito
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen()));
+              break;
+            case 2:
+              // Navegar a la lista de deseos
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishlistScreen()));
+              break;
+            case 3:
+              // Navegar a la página de perfil de usuario
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfileScreen()));
+              break;
+          }
+        },
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
         ],
@@ -239,8 +238,7 @@ class HomeScreen extends StatelessWidget {
         child: Icon(Icons.add_circle_sharp),
         onPressed: () => loadNewProduct(context), // Pasa el contexto aquí
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
