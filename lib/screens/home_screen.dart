@@ -1,16 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-
+import 'dart:js';
+import 'package:ejemplo_3/screens/cart_screen.dart';
 import 'package:ejemplo_3/screens/product_screen.dart';
+import 'package:ejemplo_3/screens/profile_screen.dart';
+import 'package:ejemplo_3/screens/wishlist_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/product_card.dart';
-import 'cart_screen.dart';
-import 'wishlist_screen.dart';
-import 'profile_screen.dart';
+import 'product_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -58,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-// Método para generar una ventana emergente con el nuevo producto
+  // Método para generar una ventana emergente con el nuevo producto
   void showProductDialog(BuildContext context, String productName) {
     showDialog(
       context: context,
@@ -85,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //Metodo para la busqueda
+  // Metodo para la busqueda
   void handleSearch(BuildContext context, String query) {
     // Buscar en imgList para una coincidencia
     String? foundProduct = imgList.firstWhere(
@@ -267,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           switch (index) {
             case 0:
-              // Aquí, 'Home' es el ítem actual, por lo que no es necesario hacer nada
+              // 'Home' es el ítem actual, por lo que no es necesario hacer nada
               break;
             case 1:
               // Navegar a la página del carrito
@@ -282,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
             case 3:
               // Navegar a la página de perfil de usuario
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+                  MaterialPageRoute(builder: (context) => UserProfileScreen()));
               break;
           }
         },

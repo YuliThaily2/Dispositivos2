@@ -5,45 +5,66 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('User Profile'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('path_to_your_avatar_image.jpg'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Nombre de Usuario',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Correo Electrónico: usuario@example.com',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 30),
-            ElevatedButton(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                Navigator.of(context).pop();  // Acción de retroceso
               },
-              child: Text('Cerrar Sesión'),
             ),
-          ],
-        ),
+          ),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/fondo.jpg'),  // Reemplaza con la ruta correcta de tu imagen de fondo
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage('images/avatar.jpg'),  // Reemplaza con la ruta correcta de tu imagen de avatar
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                Text(
+                  'Thaily Gonzalez',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Correo Electrónico: Thaily123@example.com',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Lógica para cerrar sesión
+                  },
+                  child: Text('Cerrar Sesión'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
