@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/product_card.dart';
+import 'cart_screen.dart';
+import 'wishlist_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
@@ -204,7 +206,25 @@ class HomeScreen extends StatelessWidget {
         selectedItemColor: Color(0xFFFD725A),
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
-        onTap: (index) {},
+        onTap: (index) {
+                switch (index) {
+                    case 0:
+                        // Aquí, 'Home' es el ítem actual, por lo que no es necesario hacer nada
+                        break;
+                    case 1:
+                        // Navegar a la página del carrito
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen()));
+                        break;
+                    case 2:
+                        // Navegar a la lista de deseos
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishlistScreen()));
+                        break;
+                    case 3:
+                        // Navegar a la página de perfil de usuario
+                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+                        break;
+                }
+            },
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
