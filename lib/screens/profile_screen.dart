@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pop();  // Acción de retroceso
+                Navigator.of(context).pop(); // Acción de retroceso
               },
             ),
           ),
@@ -21,14 +21,16 @@ class ProfileScreen extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/fondo.jpg'),  // Reemplaza con la ruta correcta de tu imagen de fondo
+                image: AssetImage(
+                    'images/fondo.jpg'), // Reemplaza con la ruta correcta de tu imagen de fondo
                 fit: BoxFit.cover,
               ),
             ),
             child: Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('images/avatar.jpg'),  // Reemplaza con la ruta correcta de tu imagen de avatar
+                backgroundImage: AssetImage(
+                    'images/avatar.jpg'), // Reemplaza con la ruta correcta de tu imagen de avatar
               ),
             ),
           ),
@@ -57,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Lógica para cerrar sesión
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   },
                   child: Text('Cerrar Sesión'),
                 ),

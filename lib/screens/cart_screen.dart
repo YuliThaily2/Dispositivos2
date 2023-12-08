@@ -36,7 +36,7 @@ class CartScreen extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Icon(
-                    Icons.more_horiz,
+                    Icons.close,
                     size: 22,
                   ),
                 ),

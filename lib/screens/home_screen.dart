@@ -171,18 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF7F8Fa),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.notifications_none,
-                          size: 30,
-                          color: Colors.grey,
-                        ),
-                      ),
                     ],
                   ),
                 ),
