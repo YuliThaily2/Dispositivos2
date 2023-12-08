@@ -36,14 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (result != null) {
       final file = File(result.files.single.path!);
       String fileContent = await file.readAsString();
-
       setState(() {
-        _selectedFilePath = file.path;
-        _jsonKey = 'texto1';
-        _jsonData = jsonDecode(fileContent);
+        _jsonData = jsonDecode(
+            fileContent); // Almacenar la lista de productos directamente
       });
     }
-    if (_selectedFilePath != null) {
+    if (_jsonData != null) {
       _showAlertDialog(context);
     }
   }
@@ -114,20 +112,32 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Archivo seleccionado'),
-          content: Text(_jsonData[_jsonKey]
-              .toString()), // Asegúrate de que esta línea no cause errores
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedFilePath = null;
-                  _jsonKey = null;
-                  _jsonData = null;
-                });
-              },
+          title: Text('Productos Cargados'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: _jsonData.map<Widget>((product) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Nombre: ${product['name']}',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Precio: ${product['price']}'),
+                    Image.network(product['img'],
+                        height: 100,
+                        width:
+                            100), // Asegúrate de que la URL de la imagen sea válida
+                    SizedBox(height: 10),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
               child: Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
@@ -256,6 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
           switch (index) {
             case 0:
               // 'Home' es el ítem actual, por lo que no es necesario hacer nada
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomeScreen()));
               break;
             case 1:
               // Navegar a la página del carrito

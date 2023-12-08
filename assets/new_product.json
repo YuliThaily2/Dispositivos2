@@ -1,5 +1,11 @@
 [
     {
-        "name": "Chamarra"
+      "name": "Nombre del producto 1",
+      "img": "url_de_la_imagen_1"
+    },
+    {
+      "name": "Nombre del producto 2",
+      "img": "url_de_la_imagen_2"
     }
-]
+  ]
+  
