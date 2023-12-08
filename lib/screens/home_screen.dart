@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:js';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:ejemplo_3/screens/product_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,17 +10,47 @@ import 'package:flutter/services.dart';
 import '../widgets/product_card.dart';
 import 'cart_screen.dart';
 import 'wishlist_screen.dart';
+import 'profile_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
-  List catList = ['All', "Best Selling", "Jackets", "Shirt", "Pants", "bags"];
+  String? _selectedFilePath;
+  String? _jsonKey;
+  dynamic _jsonData;
 
+  List catList = ['All', "Best Selling", "Jackets", "Shirt", "Pants", "bags"];
   List imgList = ["vestido", "VestidoV", "BlusaR", "BlusaA"];
+
+  //Metodo para file pciker
+  void _pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      String fileContent = await file.readAsString();
+
+      setState(() {
+        _selectedFilePath = file.path;
+        _jsonKey = 'texto1';
+        _jsonData = jsonDecode(fileContent);
+      });
+    }
+    if (_selectedFilePath != null) {
+      _showAlertDialog(context);
+    }
+  }
 
   /// Método para cargar un nuevo producto
   void loadNewProduct(BuildContext context) async {
-    final String response =
-        await rootBundle.loadString('new_product.json');
+    final String response = await rootBundle.loadString('new_product.json');
     final data = json.decode(response);
     if (data is List) {
       final Map<String, dynamic> newProduct = data.first;
@@ -75,6 +106,33 @@ class HomeScreen extends StatelessWidget {
         content: Text("Product not found"),
       ));
     }
+  }
+
+  //metodo para mostrar un alerta del json
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Archivo seleccionado'),
+          content: Text(_jsonData[_jsonKey]
+              .toString()), // Asegúrate de que esta línea no cause errores
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _selectedFilePath = null;
+                  _jsonKey = null;
+                  _jsonData = null;
+                });
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -207,37 +265,41 @@ class HomeScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         onTap: (index) {
-                switch (index) {
-                    case 0:
-                        // Aquí, 'Home' es el ítem actual, por lo que no es necesario hacer nada
-                        break;
-                    case 1:
-                        // Navegar a la página del carrito
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen()));
-                        break;
-                    case 2:
-                        // Navegar a la lista de deseos
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishlistScreen()));
-                        break;
-                    case 3:
-                        // Navegar a la página de perfil de usuario
-                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-                        break;
-                }
-            },
+          switch (index) {
+            case 0:
+              // Aquí, 'Home' es el ítem actual, por lo que no es necesario hacer nada
+              break;
+            case 1:
+              // Navegar a la página del carrito
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartScreen()));
+              break;
+            case 2:
+              // Navegar a la lista de deseos
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => WishlistScreen()));
+              break;
+            case 3:
+              // Navegar a la página de perfil de usuario
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+              break;
+          }
+        },
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.cart_fill), label: 'Cart'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Wishlist'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFFD7254),
         child: Icon(Icons.add_circle_sharp),
-        onPressed: () => loadNewProduct(context), // Pasa el contexto aquí
+        onPressed: _pickFile, // Pasa el contexto aquí
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,

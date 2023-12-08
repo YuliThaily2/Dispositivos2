@@ -1,6 +1,7 @@
+import 'package:ejemplo_3/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +35,10 @@ class UserProfileScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                // Lógica para cerrar sesión
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
               },
               child: Text('Cerrar Sesión'),
             ),
