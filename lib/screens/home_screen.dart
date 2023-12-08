@@ -1,9 +1,36 @@
+import 'dart:js';
+
+import 'package:ejemplo_3/screens/product_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/product_card.dart';
 
 class HomeScreen extends StatelessWidget {
+  final TextEditingController searchController = TextEditingController();
+
+  void handleSearch(BuildContext context, String query) {
+    // Buscar en imgList para una coincidencia
+    String? foundProduct = imgList.firstWhere(
+        (product) => product.toLowerCase() == query.toLowerCase(),
+        orElse: () => null);
+
+    // Si se encuentra una coincidencia, navegar a la página de detalles del producto
+    if (foundProduct != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ProductScreen(foundProduct),
+        ),
+      );
+    } else {
+      // Mostrar algún mensaje de que no se encontró el producto
+      // Puedes usar un Snackbar, por ejemplo, para mostrar el mensaje
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Product not found"),
+      ));
+    }
+  }
+
   List catList = ['All', "Best Selling", "Jackets", "Shirt", "Pants", "bags"];
 
   List imgList = ["vestido", "VestidoV", "BlusaR", "BlusaA"];
@@ -30,13 +57,16 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextFormField(
+                          controller: searchController,
                           decoration: InputDecoration(
                             label: Text("Find Your Product"),
                             border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              size: 30,
-                              color: Colors.grey,
+                            prefixIcon: Icon(Icons.search,
+                                size: 30, color: Colors.grey),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () =>
+                                  handleSearch(context, searchController.text),
                             ),
                           ),
                         ),
@@ -139,18 +169,18 @@ class HomeScreen extends StatelessWidget {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.cart_fill),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite),label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.person),label: ''),
-
+              icon: Icon(CupertinoIcons.cart_fill), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFFD7254),
         child: Icon(Icons.camera),
-        onPressed: (){},
+        onPressed: () {},
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
