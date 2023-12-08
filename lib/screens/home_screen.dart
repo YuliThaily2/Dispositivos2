@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:js';
+import 'dart:io';
 import 'package:ejemplo_3/screens/cart_screen.dart';
 import 'package:ejemplo_3/screens/product_screen.dart';
 import 'package:ejemplo_3/screens/profile_screen.dart';
 import 'package:ejemplo_3/screens/wishlist_screen.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -281,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
             case 3:
               // Navegar a la página de perfil de usuario
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => UserProfileScreen()));
+                  MaterialPageRoute(builder: (context) => ProfileScreen()));
               break;
           }
         },
